@@ -89,13 +89,15 @@ class CalenderPickerHeader extends StatelessWidget {
                 Text(
                   selectedStartDate == null
                       ? (selectedDate != null
-                          ? DateFormat('dd MMMM yyyy', locale.toString())
+                          ? DateFormat('dd MMMM yyyy', )
                               .format(selectedDate!)
                           : '')
                       : selectedEndDate == null
-                          ? DateFormat('MMM dd', locale.toString())
+                          ? DateFormat('MMM dd', )
                               .format(selectedStartDate!)
-                          : "${DateFormat('MMM dd',  locale.toString()).format(selectedStartDate!)} -  ${DateFormat('MMM dd', locale.toString()).format(selectedEndDate!)}",
+                          : "${DateFormat(
+                              'MMM dd',
+                            ).format(selectedStartDate!)} -  ${DateFormat('MMM dd', ).format(selectedEndDate!)}",
                   style: headerStyle.dateTextStyle ??
                       Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.white,

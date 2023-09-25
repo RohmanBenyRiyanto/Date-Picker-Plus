@@ -26,10 +26,10 @@ class CalendarPickerMonth extends StatelessWidget {
           horizontal: 24,
         ),
         child: Text(
-          '${DateFormat.MMMM(locale).format(month)} ${DateFormat.y(locale).format(month)}',
+          '${DateFormat.MMMM().format(month)} ${DateFormat.y().format(month)}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                locale: locale,
+                // locale: locale,
               ),
         ),
       ),
