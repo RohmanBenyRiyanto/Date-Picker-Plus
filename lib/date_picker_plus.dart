@@ -1,7 +1,5 @@
 library date_picker_plus;
 
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';

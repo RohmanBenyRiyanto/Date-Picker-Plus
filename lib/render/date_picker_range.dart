@@ -165,7 +165,7 @@ class _CalenderPickerRangeState extends State<CalenderPickerRange> {
 
   void updateSelectedDate(DateTime date) {
     if (_checkIfDateIsWithinLimit(date)) {
-      if (_selectedStartDate.isNull && _selectedEndDate == null) {
+      if (_selectedEndDate == null) {
         _selectedStartDate = date;
         _selectedEndDate = null;
       } else if (_selectedEndDate == null) {
