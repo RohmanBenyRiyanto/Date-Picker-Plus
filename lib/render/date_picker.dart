@@ -58,6 +58,7 @@ class _CalenderPickerState extends State<CalenderPicker> {
   final DateTime now = DateTime.now();
   late List<DateTime> _monthsList;
   late int currentDateIndex;
+  int _selectedYear = 0;
 
   CalenderPickerLimit? get limit => widget.limit;
   bool isLimit = false;
@@ -72,6 +73,7 @@ class _CalenderPickerState extends State<CalenderPicker> {
 
     _monthsList = generateMonthsList();
     currentDateIndex = getCurrentDateIndex();
+    _selectedYear = widget.currentDate.year;
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -189,7 +191,7 @@ class _CalenderPickerState extends State<CalenderPicker> {
     bool isLimit = false,
   }) {
     if (useWeekEnd) {
-      return Colors.red.shade400; // Ganti dengan warna dari MaterialColor
+      return Colors.red; // Ganti dengan warna dari MaterialColor
     } else {
       if (isWithinMonth) {
         if (isSelected && thisDay && !isLimit) {
@@ -197,11 +199,17 @@ class _CalenderPickerState extends State<CalenderPicker> {
         } else if (isSelected && !thisDay && !isLimit) {
           return Colors.white; // Ganti dengan warna dari MaterialColor
         } else if (thisDay && !isSelected && !isLimit) {
-          return Colors.blue; // Ganti dengan warna dari MaterialColor
+          return Theme.of(context)
+              .colorScheme
+              .primary; // Ganti dengan warna dari MaterialColor
         } else if (!thisDay && isSelected && !isLimit) {
-          return Colors.blue; // Ganti dengan warna dari MaterialColor
+          return Theme.of(context)
+              .colorScheme
+              .primary; // Ganti dengan warna dari MaterialColor
         } else if (thisDay && !isSelected && isLimit) {
-          return Colors.blue; // Ganti dengan warna dari MaterialColor
+          return Theme.of(context)
+              .colorScheme
+              .primary; // Ganti dengan warna dari MaterialColor
         } else if (!thisDay && !isSelected && isLimit) {
           return Colors.grey.shade200; // Ganti dengan warna dari MaterialColor
         } else {
@@ -209,6 +217,21 @@ class _CalenderPickerState extends State<CalenderPicker> {
         }
       } else {
         return Colors.transparent; // Ganti dengan warna dari MaterialColor
+      }
+    }
+  } // Fungsi untuk menggulir ke bulan saat ini
+
+  void _scrollToCurrentDate() {
+    final currentMonth = DateTime(_selectedYear, _selectedDate.month, 1);
+    for (int i = 0; i < _monthsList.length; i++) {
+      if (_monthsList[i].year == currentMonth.year &&
+          _monthsList[i].month == currentMonth.month) {
+        _scrollController.scrollTo(
+          index: i,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+        );
+        break;
       }
     }
   }
@@ -219,14 +242,12 @@ class _CalenderPickerState extends State<CalenderPicker> {
       height: widget.height ?? MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width,
       margin: widget.margin,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-      ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          CalenderPickerHeader(
+          DatePickerHeader(
             selectedDate: _selectedDate,
             headerStyle: widget.styleHeader,
             locale: widget.locale,
@@ -235,6 +256,46 @@ class _CalenderPickerState extends State<CalenderPicker> {
             height: 0,
             color: Colors.grey.shade200,
             thickness: 1,
+          ),
+          YearPicker(
+            year: _selectedYear,
+            currentMonth: DateFormat.MMMM().format(_selectedDate),
+            onYearIncrement: () {
+              setState(
+                () {
+                  _selectedYear++;
+                  if (_selectedYear <= widget.endDate.year) {
+                    _selectedDate = DateTime(
+                      _selectedYear,
+                      _selectedDate.month,
+                      _selectedDate.day,
+                    );
+                    _scrollToCurrentDate();
+                  } else {
+                    // Tahun yang dipilih melewati endDate, kembalikan ke endDate
+                    _selectedYear = widget.endDate.year;
+                  }
+                },
+              );
+            },
+            onYearDecrement: () {
+              setState(
+                () {
+                  _selectedYear--;
+                  if (_selectedYear >= widget.startDate.year) {
+                    _selectedDate = DateTime(
+                      _selectedYear,
+                      _selectedDate.month,
+                      _selectedDate.day,
+                    );
+                    _scrollToCurrentDate();
+                  } else {
+                    // Tahun yang dipilih melewati startDate, kembalikan ke startDate
+                    _selectedYear = widget.startDate.year;
+                  }
+                },
+              );
+            },
           ),
           CalenderPickerDay(
             now: now,

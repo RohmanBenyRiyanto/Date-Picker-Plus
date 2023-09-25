@@ -9,48 +9,6 @@ class DayStyleType {
       'Complete'; // Complete day name (e.g., Monday, Tuesday, Wednesday)
 }
 
-class DayStyle {
-  final TextStyle? textStyle;
-  final double dayHeaderHeight;
-  final String dayStyle;
-  final Color backgroundColor;
-  final String? fontFamily;
-  final double? fontSize;
-  final FontWeight? fontWeight;
-
-  DayStyle({
-    this.textStyle,
-    double? dayHeaderHeight,
-    String? dayStyle,
-    Color? backgroundColor,
-    this.fontFamily,
-    this.fontSize,
-    this.fontWeight,
-  })  : dayStyle = dayStyle ?? DayStyleType.E,
-        dayHeaderHeight = dayHeaderHeight ?? 48.0,
-        backgroundColor = backgroundColor ?? Colors.white;
-
-  DayStyle copyWith({
-    TextStyle? textStyle,
-    double? dayHeaderHeight,
-    String? dayStyle,
-    Color? backgroundColor,
-    String? fontFamily,
-    double? fontSize,
-    FontWeight? fontWeight,
-  }) {
-    return DayStyle(
-      textStyle: textStyle ?? this.textStyle,
-      dayHeaderHeight: dayHeaderHeight ?? this.dayHeaderHeight,
-      dayStyle: dayStyle ?? this.dayStyle,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      fontFamily: fontFamily ?? this.fontFamily,
-      fontSize: fontSize ?? this.fontSize,
-      fontWeight: fontWeight ?? this.fontWeight,
-    );
-  }
-}
-
 class DefaultDayStyle extends DayStyle {
   DefaultDayStyle()
       : super(
@@ -89,7 +47,8 @@ class CalenderPickerDay extends StatelessWidget {
       padding: padding,
       height: styleDay?.dayHeaderHeight,
       width: MediaQuery.of(context).size.width,
-      color: styleDay?.backgroundColor,
+      color:
+          styleDay?.backgroundColor ?? Theme.of(context).colorScheme.background,
       child: Row(
         children: List.generate(
           daysInWeek,
@@ -114,17 +73,19 @@ class CalenderPickerDay extends StatelessWidget {
 
             return Expanded(
               child: Center(
-                child: Text(
-                  dayName,
-                  style: styleDay!.textStyle?.copyWith(
-                        fontSize: styleDay!.fontSize,
-                        fontWeight: styleDay!.fontWeight,
-                      ) ??
-                      const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                        fontSize: 16.0,
-                      ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Text(
+                    dayName,
+                    style: styleDay?.textStyle?.copyWith(
+                          fontSize: styleDay!.fontSize,
+                          fontWeight: styleDay!.fontWeight,
+                        ) ??
+                        Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                  ),
                 ),
               ),
             );

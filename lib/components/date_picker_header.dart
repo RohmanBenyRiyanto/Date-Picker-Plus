@@ -1,50 +1,7 @@
 part of date_picker_plus;
 
-class HeaderStyle {
-  final Color backgroundColor;
-  final double headerHeight;
-  final TextStyle? titleTextStyle;
-  final TextStyle? dateTextStyle;
-  final String? editButtonIcon;
-  final Color? editButtonColor;
-  final String? editButtonTooltip;
-  final String title;
-  final String? note;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
-  final BoxDecoration? decoration;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisAlignment mainAxisAlignment;
-
-  HeaderStyle({
-    this.titleTextStyle,
-    this.dateTextStyle,
-    this.editButtonIcon,
-    this.editButtonColor,
-    this.editButtonTooltip,
-    this.note,
-    Color? backgroundColor,
-    double? headerHeight,
-    EdgeInsets? padding,
-    EdgeInsets? margin,
-    String? title,
-    this.crossAxisAlignment = CrossAxisAlignment.start,
-    this.mainAxisAlignment = MainAxisAlignment.center,
-    this.decoration,
-  })  : backgroundColor = backgroundColor ?? const Color(0xFF025EED),
-        headerHeight = headerHeight ?? 72.0,
-        margin = margin ?? EdgeInsets.zero,
-        padding = padding ?? EdgeInsets.zero,
-        title = title ?? 'Pilih Tanggal',
-        assert(
-            decoration == null || backgroundColor == null,
-            'Cannot provide both a color and a decoration\n'
-            'To have a background color, set "color" to something\n'
-            'To have a custom decoration, set "decoration" to something');
-}
-
-class CalenderPickerHeader extends StatelessWidget {
-  CalenderPickerHeader({
+class DatePickerHeader extends StatelessWidget {
+  DatePickerHeader({
     Key? key,
     this.selectedDate,
     this.selectedStartDate,
@@ -63,20 +20,20 @@ class CalenderPickerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: headerStyle.backgroundColor,
+      color:
+          headerStyle.backgroundColor ?? Theme.of(context).colorScheme.primary,
       margin: headerStyle.margin,
       padding: headerStyle.padding,
-      height: headerStyle.headerHeight,
+      height: headerStyle.height,
       decoration: headerStyle.decoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Expanded(
+          Flexible(
             child: Column(
               crossAxisAlignment: headerStyle.crossAxisAlignment,
               mainAxisAlignment: headerStyle.mainAxisAlignment,
-              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   headerStyle.title,
@@ -85,22 +42,28 @@ class CalenderPickerHeader extends StatelessWidget {
                             color: Colors.white,
                           ),
                 ),
-                const SizedBox(height: 8.0),
+                const SizedBox(height: 28.0),
                 Text(
                   selectedStartDate == null
                       ? (selectedDate != null
-                          ? DateFormat('dd MMMM yyyy', )
-                              .format(selectedDate!)
+                          ? DateFormat(
+                              // Mon, Jan 20
+                              'EEE, MMM dd',
+                            ).format(selectedDate!)
                           : '')
                       : selectedEndDate == null
-                          ? DateFormat('MMM dd', )
-                              .format(selectedStartDate!)
+                          ? DateFormat(
+                              'EEE, MMM dd',
+                            ).format(selectedStartDate!)
                           : "${DateFormat(
-                              'MMM dd',
-                            ).format(selectedStartDate!)} -  ${DateFormat('MMM dd', ).format(selectedEndDate!)}",
+                              'EEE, MMM dd',
+                            ).format(selectedStartDate!)} -  ${DateFormat(
+                              'EEE, MMM dd',
+                            ).format(selectedEndDate!)}",
                   style: headerStyle.dateTextStyle ??
-                      Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      Theme.of(context).textTheme.headlineMedium?.copyWith(
                             color: Colors.white,
+                            fontWeight: FontWeight.w500,
                           ),
                 ),
                 Visibility(
@@ -123,19 +86,23 @@ class CalenderPickerHeader extends StatelessWidget {
           ),
           const SizedBox(width: 8.0),
           Visibility(
-            visible: false,
+            visible: true,
             child: Transform(
               transform: Matrix4.translationValues(
                 0.0,
-                12,
+                6,
                 0.0,
               ),
               child: IconButton(
-                onPressed: () {},
+                splashRadius: 24.0,
                 icon: Icon(
-                  Icons.edit,
+                  Icons.mode_edit_outlined,
                   color: headerStyle.editButtonColor ?? Colors.white,
                 ),
+                tooltip: headerStyle.editButtonTooltip ?? 'Edit',
+                onPressed: () {
+                  debugPrint('Edit button pressed');
+                },
               ),
             ),
           ),

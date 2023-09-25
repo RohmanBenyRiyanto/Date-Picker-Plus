@@ -236,7 +236,7 @@ class _CalenderPickerRangeState extends State<CalenderPickerRange> {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CalenderPickerHeader(
+          DatePickerHeader(
             selectedStartDate: _selectedStartDate,
             selectedEndDate: _selectedEndDate,
             headerStyle: widget.styleHeader,
