@@ -1,0 +1,4 @@
+enum CalenderType {
+  single,
+  range,
+}
