@@ -76,6 +76,7 @@ class CalenderPickerDay extends StatelessWidget {
     this.styleDay,
     this.padding,
     this.firstDayOfWeek = 1,
+    this.locale,
   }) : super(key: key);
 
   /// Jarak padding pada konten widget.
@@ -89,6 +90,9 @@ class CalenderPickerDay extends StatelessWidget {
 
   /// Hari pertama dalam seminggu (1 untuk Senin, 2 untuk Selasa, dst.).
   final int firstDayOfWeek;
+
+  /// Locale
+  final Locale? locale;
 
   @override
   Widget build(BuildContext context) {
@@ -120,13 +124,13 @@ class CalenderPickerDay extends StatelessWidget {
             // Menentukan format nama hari berdasarkan [styleDay.dayStyle].
             switch (styleDay?.dayStyle) {
               case DayStyleType.E:
-                dayName = DateFormat.E('id_ID').format(day).substring(0, 1);
+                dayName = DateFormat.E(locale).format(day).substring(0, 1);
                 break;
               case DayStyleType.Eee:
-                dayName = DateFormat.E('id_ID').format(day);
+                dayName = DateFormat.E(locale).format(day);
                 break;
               case DayStyleType.Complete:
-                dayName = DateFormat('EEEE', 'id_ID').format(day);
+                dayName = DateFormat('EEEE', locale.toString()).format(day);
                 break;
               default:
                 dayName = DateFormat.E().format(day).substring(0, 1);

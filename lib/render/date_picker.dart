@@ -20,6 +20,7 @@ class CalenderPicker extends StatefulWidget {
     this.height,
     this.limit,
     this.bottomStyle,
+    this.locale,
   })  : firstDayOfWeek = firstDayOfWeek ?? 1,
         padding = padding ?? EdgeInsets.zero,
         margin = margin ?? EdgeInsets.zero,
@@ -43,6 +44,7 @@ class CalenderPicker extends StatefulWidget {
   final void Function()? onCancelled;
   final double? height;
   final bool useWeekEnd;
+  final Locale? locale;
   final ValueChanged<DateTime>? onDatePickerModeChange;
 
   @override
@@ -227,6 +229,7 @@ class _CalenderPickerState extends State<CalenderPicker> {
           CalenderPickerHeader(
             selectedDate: _selectedDate,
             headerStyle: widget.styleHeader,
+            locale: widget.locale,
           ),
           Divider(
             height: 0,
@@ -238,6 +241,7 @@ class _CalenderPickerState extends State<CalenderPicker> {
             padding: widget.padding,
             firstDayOfWeek: widget.firstDayOfWeek,
             styleDay: widget.styleDay,
+            locale: widget.locale,
           ),
           Expanded(
             child: ScrollablePositionedList.builder(
@@ -263,6 +267,7 @@ class _CalenderPickerState extends State<CalenderPicker> {
                         month: month,
                         monthHeaderHeight: widget.monthHeaderHeight,
                         margin: widget.padding,
+                        locale: widget.locale,
                       ),
                       Container(
                         padding: widget.padding,

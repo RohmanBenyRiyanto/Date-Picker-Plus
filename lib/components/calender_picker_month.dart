@@ -6,11 +6,13 @@ class CalendarPickerMonth extends StatelessWidget {
     required this.month,
     this.monthHeaderHeight = 48,
     this.margin,
+    this.locale,
   });
 
   final double monthHeaderHeight;
   final DateTime month;
   final EdgeInsets? margin;
+  final Locale? locale;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +26,10 @@ class CalendarPickerMonth extends StatelessWidget {
           horizontal: 24,
         ),
         child: Text(
-          '${DateFormat.MMMM('id_ID').format(month)} ${DateFormat.y('id_ID').format(month)}',
+          '${DateFormat.MMMM(locale).format(month)} ${DateFormat.y(locale).format(month)}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                locale: const Locale('id', 'ID'),
+                locale: locale,
               ),
         ),
       ),

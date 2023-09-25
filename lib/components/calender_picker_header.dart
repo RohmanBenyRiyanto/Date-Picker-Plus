@@ -49,6 +49,7 @@ class CalenderPickerHeader extends StatelessWidget {
     this.selectedDate,
     this.selectedStartDate,
     this.selectedEndDate,
+    this.locale,
     HeaderStyle? headerStyle,
   })  : headerStyle = headerStyle ?? HeaderStyle(),
         super(key: key);
@@ -57,6 +58,7 @@ class CalenderPickerHeader extends StatelessWidget {
   final DateTime? selectedDate;
   final DateTime? selectedStartDate;
   final DateTime? selectedEndDate;
+  final Locale? locale;
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +89,13 @@ class CalenderPickerHeader extends StatelessWidget {
                 Text(
                   selectedStartDate == null
                       ? (selectedDate != null
-                          ? DateFormat('dd MMMM yyyy', 'id_ID')
+                          ? DateFormat('dd MMMM yyyy', locale.toString())
                               .format(selectedDate!)
                           : '')
                       : selectedEndDate == null
-                          ? DateFormat('MMM dd', 'id_ID')
+                          ? DateFormat('MMM dd', locale.toString())
                               .format(selectedStartDate!)
-                          : "${DateFormat('MMM dd', 'id_ID').format(selectedStartDate!)} -  ${DateFormat('MMM dd', 'id_ID').format(selectedEndDate!)}",
+                          : "${DateFormat('MMM dd',  locale.toString()).format(selectedStartDate!)} -  ${DateFormat('MMM dd', locale.toString()).format(selectedEndDate!)}",
                   style: headerStyle.dateTextStyle ??
                       Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.white,
